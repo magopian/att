@@ -1,0 +1,2 @@
+publish:
+	gh-pages -d .
