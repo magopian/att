@@ -25,19 +25,20 @@
     <meta name="og:locale" content="fr_FR" />
     <meta name="og:type" content="website" />
     <style>
-        body {
-            font: 16px sans-serif;
-            margin: 0 auto;
-            text-align: justify;
-            width: 210mm;
-        }
-        h1, h2 {
-            text-align: center;
-        }
-        h2 {
-            font-size: 16px;
-            font-weight: normal;
-        }
+      body {
+        font: 16px sans-serif;
+        margin: 0 auto;
+        text-align: justify;
+        width: 210mm;
+      }
+      h1,
+      h2 {
+        text-align: center;
+      }
+      h2 {
+        font-size: 16px;
+        font-weight: normal;
+      }
     </style>
   </head>
   <body>
@@ -48,67 +49,70 @@
       propagation du virus Covid-19 :
     </h2>
 
-    <p>Je soussigné(e)</p>
-    <p>Mme / M. <input type="text" name="nom" /></p>
-    <p>Né(e) le : <input type="text" name="date-naissance" /></p>
-    <p>
-      Demeurant :
-      <textarea type="text" name="adresse" rows="3" cols="40"></textarea>
-    </p>
+    <form id="declaration-form">
+      <p>Je soussigné(e)</p>
+      <p>Mme / M. <input type="text" name="nom" /></p>
+      <p>Né(e) le : <input type="text" name="date-naissance" /></p>
+      <p>
+        Demeurant :
+        <textarea type="text" name="adresse" rows="3" cols="40"></textarea>
+      </p>
 
-    <p>
-      certifie que mon déplacement est lié au motif suivant (cocher la case)
-      autorisé par l’article 1er du décret du 16 mars 2020 portant
-      réglementation des déplacements dans le cadre de la lutte contre la
-      propagation du virus Covid-19 :
-    </p>
-    <p>
-      <input type="checkbox" name="domicile" /> déplacements entre le domicile
-      et le lieu d’exercice de l’activité professionnelle, lorsqu’ils sont
-      indispensables à l’exercice d’activités ne pouvant être organisées sous
-      forme de télétravail (sur justificatif permanent) ou déplacements
-      professionnels ne pouvant être différés ;
-    </p>
-    <p>
-      <input type="checkbox" name="courses" /> déplacements pour effectuer des
-      achats de première nécessité dans des établissements autorisés (liste sur
-      gouvernement.fr) ;
-    </p>
-    <p>
-      <input type="checkbox" name="sante" /> déplacements pour motif de santé ;
-    </p>
-    <p>
-      <input type="checkbox" name="famille" /> déplacements pour motif familial
-      impérieux, pour l’assistance aux personnes vulnérables ou la garde
-      d’enfants ;
-    </p>
-    <p>
-      <input type="checkbox" name="sport" /> déplacements brefs, à proximité du
-      domicile, liés à l’activité physique individuelle des personnes, à
-      l’exclusion de toute pratique sportive collective, et aux besoins des
-      animaux de compagnie.
-    </p>
-    <p>
-      Fait à <input type="text" name="fait-a" />, le
-      <input type="date" name="date" />
-    </p>
-    <p>signature :</p>
-    <button style="display: none" id="print">Imprimer</button>
+      <p>
+        certifie que mon déplacement est lié au motif suivant (cocher la case)
+        autorisé par l’article 1er du décret du 16 mars 2020 portant
+        réglementation des déplacements dans le cadre de la lutte contre la
+        propagation du virus Covid-19 :
+      </p>
+      <p>
+        <input type="checkbox" name="domicile" /> déplacements entre le domicile
+        et le lieu d’exercice de l’activité professionnelle, lorsqu’ils sont
+        indispensables à l’exercice d’activités ne pouvant être organisées sous
+        forme de télétravail (sur justificatif permanent) ou déplacements
+        professionnels ne pouvant être différés ;
+      </p>
+      <p>
+        <input type="checkbox" name="courses" /> déplacements pour effectuer des
+        achats de première nécessité dans des établissements autorisés (liste
+        sur gouvernement.fr) ;
+      </p>
+      <p>
+        <input type="checkbox" name="sante" /> déplacements pour motif de santé
+        ;
+      </p>
+      <p>
+        <input type="checkbox" name="famille" /> déplacements pour motif
+        familial impérieux, pour l’assistance aux personnes vulnérables ou la
+        garde d’enfants ;
+      </p>
+      <p>
+        <input type="checkbox" name="sport" /> déplacements brefs, à proximité
+        du domicile, liés à l’activité physique individuelle des personnes, à
+        l’exclusion de toute pratique sportive collective, et aux besoins des
+        animaux de compagnie.
+      </p>
+      <p>
+        Fait à <input type="text" name="fait-a" />, le
+        <input type="date" name="date" />
+      </p>
+    </form>
+    <hr />
     <footer>
-        Ceci est une version à remplir en ligne du document officiel
-        disponible sur
-        <a
-            href="https://www.interieur.gouv.fr/Actualites/L-actu-du-Ministere/Attestation-de-deplacement-derogatoire"
-            title"Attestation de déplacement dérogatoire">
-            le site du ministère de l'intérieur
-        </a>
+      Ceci est une version à remplir en ligne du document officiel disponible
+      sur
+      <a
+        href="https://www.interieur.gouv.fr/Actualites/L-actu-du-Ministere/Attestation-de-deplacement-derogatoire"
+        title="Attestation de déplacement dérogatoire"
+      >
+        le site du ministère de l'intérieur </a
+      >. D'après
+      <a
+        href="https://www.numerama.com/politique/611777-attestation-de-deplacement-que-faire-sans-imprimante-ni-papier.html#611777-Dclaration-sur-smartphone"
+        title="Article sur le site de Numérama"
+        >Numérama</a
+      >
+      il est possible de montrer une version numérique (cette page remplie) en
+      lieu et place d'une version papier.
     </footer>
-    <script>
-      const button = document.getElementById("print");
-      button.style.display = "block";
-      button.onclick = function() {
-        window.print();
-      };
-    </script>
   </body>
 </html>
