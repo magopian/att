@@ -39,6 +39,10 @@
         font-size: 16px;
         font-weight: normal;
       }
+      canvas {
+        background-color: #eee;
+        touch-action: none;
+      }
     </style>
   </head>
   <body>
@@ -96,9 +100,9 @@
         <input type="date" name="date" />
       </p>
 
-      <p>
+      <p id="signature-container" style="display: none">
         Signature :
-        <input type="file" name="signature" accept="image/*" />
+        <canvas id="signature" width="800" height="400"> </canvas>
       </p>
     </form>
 
@@ -174,6 +178,160 @@
           };
         }
       });
+
+      // DRAWING A SIGNATURE (copied from https://stackoverflow.com/a/22891828)
+      const drawingContainer = document.getElementById("signature-container");
+      drawingContainer.style.display = "block";
+      var context = document.getElementById("signature").getContext("2d");
+      var canvas = document.getElementById("signature");
+      context = canvas.getContext("2d");
+      context.strokeStyle = "#000000";
+      context.lineJoin = "round";
+      context.lineWidth = 2;
+
+      var clickX = [];
+      var clickY = [];
+      var clickDrag = [];
+      var paint;
+
+      /**
+       * Add information where the user clicked at.
+       * @param {number} x
+       * @param {number} y
+       * @return {boolean} dragging
+       */
+      function addClick(x, y, dragging) {
+        clickX.push(x);
+        clickY.push(y);
+        clickDrag.push(dragging);
+      }
+
+      /**
+       * Redraw the complete canvas.
+       */
+      function redraw() {
+        // Clears the canvas
+        context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+
+        for (var i = 0; i < clickX.length; i += 1) {
+          if (!clickDrag[i] && i == 0) {
+            context.beginPath();
+            context.moveTo(clickX[i], clickY[i]);
+            context.stroke();
+          } else if (!clickDrag[i] && i > 0) {
+            context.closePath();
+
+            context.beginPath();
+            context.moveTo(clickX[i], clickY[i]);
+            context.stroke();
+          } else {
+            context.lineTo(clickX[i], clickY[i]);
+            context.stroke();
+          }
+        }
+      }
+
+      /**
+       * Draw the newly added point.
+       * @return {void}
+       */
+      function drawNew() {
+        var i = clickX.length - 1;
+        if (!clickDrag[i]) {
+          if (clickX.length == 0) {
+            context.beginPath();
+            context.moveTo(clickX[i], clickY[i]);
+            context.stroke();
+          } else {
+            context.closePath();
+
+            context.beginPath();
+            context.moveTo(clickX[i], clickY[i]);
+            context.stroke();
+          }
+        } else {
+          context.lineTo(clickX[i], clickY[i]);
+          context.stroke();
+        }
+      }
+
+      function mouseDownEventHandler(e) {
+        paint = true;
+        var x = e.pageX - canvas.offsetLeft;
+        var y = e.pageY - canvas.offsetTop;
+        if (paint) {
+          addClick(x, y, false);
+          drawNew();
+        }
+      }
+
+      function touchstartEventHandler(e) {
+        paint = true;
+        if (paint) {
+          addClick(
+            e.touches[0].pageX - canvas.offsetLeft,
+            e.touches[0].pageY - canvas.offsetTop,
+            false
+          );
+          drawNew();
+        }
+      }
+
+      function mouseUpEventHandler(e) {
+        context.closePath();
+        paint = false;
+      }
+
+      function mouseMoveEventHandler(e) {
+        var x = e.pageX - canvas.offsetLeft;
+        var y = e.pageY - canvas.offsetTop;
+        if (paint) {
+          addClick(x, y, true);
+          drawNew();
+        }
+      }
+
+      function touchMoveEventHandler(e) {
+        if (paint) {
+          addClick(
+            e.touches[0].pageX - canvas.offsetLeft,
+            e.touches[0].pageY - canvas.offsetTop,
+            true
+          );
+          drawNew();
+        }
+      }
+
+      function setUpHandler(isMouseandNotTouch, detectEvent) {
+        removeRaceHandlers();
+        if (isMouseandNotTouch) {
+          canvas.addEventListener("mouseup", mouseUpEventHandler);
+          canvas.addEventListener("mousemove", mouseMoveEventHandler);
+          canvas.addEventListener("mousedown", mouseDownEventHandler);
+          mouseDownEventHandler(detectEvent);
+        } else {
+          canvas.addEventListener("touchstart", touchstartEventHandler);
+          canvas.addEventListener("touchmove", touchMoveEventHandler);
+          canvas.addEventListener("touchend", mouseUpEventHandler);
+          touchstartEventHandler(detectEvent);
+        }
+      }
+
+      function mouseWins(e) {
+        setUpHandler(true, e);
+      }
+
+      function touchWins(e) {
+        setUpHandler(false, e);
+      }
+
+      function removeRaceHandlers() {
+        canvas.removeEventListener("mousedown", mouseWins);
+        canvas.removeEventListener("touchstart", touchWins);
+      }
+
+      canvas.addEventListener("mousedown", mouseWins);
+      canvas.addEventListener("touchstart", touchWins);
     </script>
   </body>
 </html>
