@@ -99,12 +99,13 @@
         Fait à <input type="text" name="fait-a" />, le
         <input type="date" name="date" />
       </p>
-
-      <p id="signature-container" style="display: none">
-        Signature :
-        <canvas id="signature" width="800" height="400"> </canvas>
-      </p>
     </form>
+    <p id="signature-container" style="display: none">
+      Signature :
+      <canvas id="dessiner-signature" width="800" height="400"> </canvas>
+      <button id="sauvegarder">Valider cette signature</button>
+      <img src="" alt="Signature" id="signature" />
+    </p>
 
     <hr />
     <footer>
@@ -140,26 +141,33 @@
       // SAVE/RESTORE THE FORM TO/FROM LOCALSTORAGE
       let serializedForm = {};
       // Restore form from localstorage if previous data was stored
-      const fromStorage = localStorage.getItem(window.location.href);
+      const fromStorage = localStorage.getItem(window.location.pathname);
       if (fromStorage) {
         serializedForm = JSON.parse(fromStorage);
         Object.keys(serializedForm).map(function(formElementName) {
-          const elements = document.getElementsByName(formElementName);
-          if (elements.length) {
-            const element = elements[0];
-            if (element.type === "checkbox") {
-              element.checked = serializedForm[formElementName];
-            } else {
-              element.value = serializedForm[formElementName];
+          if (formElementName === "signature") {
+            // Special casing the signature which isn't a form element.
+            const signature = document.getElementById("signature");
+            signature.src = serializedForm["signature"];
+          } else {
+            const elements = document.getElementsByName(formElementName);
+            if (elements.length) {
+              const element = elements[0];
+              if (element.type === "checkbox") {
+                element.checked = serializedForm[formElementName];
+              } else {
+                element.value = serializedForm[formElementName];
+              }
             }
           }
         });
       }
 
       // Save the form to localstorage on change
-      function saveToLocalStorage() {
+      function saveToLocalStorage(key, value) {
+        serializedForm[key] = value;
         const json = JSON.stringify(serializedForm);
-        localStorage.setItem(window.location.href, json);
+        localStorage.setItem(window.location.pathname, json);
       }
 
       const form = document.getElementById("declaration-form");
@@ -168,13 +176,11 @@
       formElements.map(function(element) {
         if (element.type === "checkbox") {
           element.onchange = function(event) {
-            serializedForm[event.target.name] = event.target.checked;
-            saveToLocalStorage();
+            saveToLocalStorage(event.target.name, event.target.checked);
           };
         } else {
           element.oninput = function(event) {
-            serializedForm[event.target.name] = event.target.value;
-            saveToLocalStorage();
+            saveToLocalStorage(event.target.name, event.target.value);
           };
         }
       });
@@ -182,8 +188,10 @@
       // DRAWING A SIGNATURE (copied from https://stackoverflow.com/a/22891828)
       const drawingContainer = document.getElementById("signature-container");
       drawingContainer.style.display = "block";
-      var context = document.getElementById("signature").getContext("2d");
-      var canvas = document.getElementById("signature");
+      var context = document
+        .getElementById("dessiner-signature")
+        .getContext("2d");
+      var canvas = document.getElementById("dessiner-signature");
       context = canvas.getContext("2d");
       context.strokeStyle = "#000000";
       context.lineJoin = "round";
@@ -332,6 +340,17 @@
 
       canvas.addEventListener("mousedown", mouseWins);
       canvas.addEventListener("touchstart", touchWins);
+
+      // Save the signature or reset it.
+      const saveSignature = document.getElementById("sauvegarder");
+      saveSignature.onclick = function() {
+        const dataURL = canvas.toDataURL("image/png");
+        const signature = document.getElementById("signature");
+        signature.src = dataURL;
+        saveToLocalStorage("signature", dataURL);
+        saveSignature.style.display = "none";
+        canvas.style.display = "none";
+      };
     </script>
   </body>
 </html>
