@@ -43,6 +43,25 @@
         background-color: #eee;
         touch-action: none;
       }
+      #signature-wrapper {
+        display: none;
+      }
+      #signature-wrapper.drawing,
+      #signature-wrapper.displaying {
+        display: block;
+      }
+      #signature-wrapper.drawing #signature-container {
+        display: block;
+      }
+      #signature-wrapper.displaying #signature-container {
+        display: none;
+      }
+      #signature-wrapper.drawing #signature-display-container {
+        display: none;
+      }
+      #signature-wrapper.displaying #signature-display-container {
+        display: block;
+      }
     </style>
   </head>
   <body>
@@ -100,12 +119,19 @@
         <input type="date" name="date" />
       </p>
     </form>
-    <p id="signature-container" style="display: none">
+    <div id="signature-wrapper">
       Signature :
-      <canvas id="dessiner-signature" width="800" height="400"> </canvas>
-      <button id="sauvegarder">Valider cette signature</button>
-      <img src="" alt="Signature" id="signature" />
-    </p>
+      <p id="signature-container">
+        <canvas id="dessiner-signature" width="800" height="400"> </canvas>
+        <button id="sauvegarder">Valider cette signature</button>
+      </p>
+      <p id="signature-display-container">
+        <img src="" alt="Signature" id="signature" />
+        <button id="refaire-signature">
+          Refaire cette signature
+        </button>
+      </p>
+    </div>
 
     <hr />
     <footer>
@@ -138,6 +164,16 @@
       </p>
     </footer>
     <script>
+      // Various html nodes
+      const saveSignature = document.getElementById("sauvegarder");
+      const signature = document.getElementById("signature");
+      const resetSignature = document.getElementById("refaire-signature");
+      const form = document.getElementById("declaration-form");
+      const signatureWrapper = document.getElementById("signature-wrapper");
+      signatureWrapper.className = "drawing";
+      const canvas = document.getElementById("dessiner-signature");
+      const context = canvas.getContext("2d");
+
       // SAVE/RESTORE THE FORM TO/FROM LOCALSTORAGE
       let serializedForm = {};
       // Restore form from localstorage if previous data was stored
@@ -147,8 +183,9 @@
         Object.keys(serializedForm).map(function(formElementName) {
           if (formElementName === "signature") {
             // Special casing the signature which isn't a form element.
-            const signature = document.getElementById("signature");
+            console.log("signature present");
             signature.src = serializedForm["signature"];
+            signatureWrapper.className = "displaying";
           } else {
             const elements = document.getElementsByName(formElementName);
             if (elements.length) {
@@ -170,7 +207,6 @@
         localStorage.setItem(window.location.pathname, json);
       }
 
-      const form = document.getElementById("declaration-form");
       // Keep compatibility with IE.
       const formElements = Array.prototype.slice.call(form.elements);
       formElements.map(function(element) {
@@ -186,13 +222,6 @@
       });
 
       // DRAWING A SIGNATURE (copied from https://stackoverflow.com/a/22891828)
-      const drawingContainer = document.getElementById("signature-container");
-      drawingContainer.style.display = "block";
-      var context = document
-        .getElementById("dessiner-signature")
-        .getContext("2d");
-      var canvas = document.getElementById("dessiner-signature");
-      context = canvas.getContext("2d");
       context.strokeStyle = "#000000";
       context.lineJoin = "round";
       context.lineWidth = 2;
@@ -342,14 +371,16 @@
       canvas.addEventListener("touchstart", touchWins);
 
       // Save the signature or reset it.
-      const saveSignature = document.getElementById("sauvegarder");
       saveSignature.onclick = function() {
         const dataURL = canvas.toDataURL("image/png");
-        const signature = document.getElementById("signature");
         signature.src = dataURL;
         saveToLocalStorage("signature", dataURL);
-        saveSignature.style.display = "none";
-        canvas.style.display = "none";
+        signatureWrapper.className = "displaying";
+      };
+
+      resetSignature.onclick = function() {
+        context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+        signatureWrapper.className = "drawing";
       };
     </script>
   </body>
