@@ -127,5 +127,45 @@
         >
       </p>
     </footer>
+    <script>
+      let serializedForm = {};
+      const fromStorage = localStorage.getItem(window.location.href);
+      if (fromStorage) {
+        serializedForm = JSON.parse(fromStorage);
+        Object.keys(serializedForm).map(function(formElementName) {
+          const elements = document.getElementsByName(formElementName);
+          if (elements.length) {
+            const element = elements[0];
+            if (element.type === "checkbox") {
+              element.checked = serializedForm[formElementName];
+            } else {
+              element.value = serializedForm[formElementName];
+            }
+          }
+        });
+      }
+
+      function saveToLocalStorage() {
+        const json = JSON.stringify(serializedForm);
+        localStorage.setItem(window.location.href, json);
+      }
+
+      const form = document.getElementById("declaration-form");
+      // Keep compatibility with IE.
+      const formElements = Array.prototype.slice.call(form.elements);
+      formElements.map(function(element) {
+        if (element.type === "checkbox") {
+          element.onchange = function(event) {
+            serializedForm[event.target.name] = event.target.checked;
+            saveToLocalStorage();
+          };
+        } else {
+          element.oninput = function(event) {
+            serializedForm[event.target.name] = event.target.value;
+            saveToLocalStorage();
+          };
+        }
+      });
+    </script>
   </body>
 </html>
