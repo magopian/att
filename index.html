@@ -95,17 +95,22 @@
         Fait à <input type="text" name="fait-a" />, le
         <input type="date" name="date" />
       </p>
+
+      <p>
+        Signature :
+        <input type="file" name="signature" accept="image/*" />
+      </p>
     </form>
+
     <hr />
     <footer>
       <p>
-        Ceci est une version à remplir en ligne du document officiel disponible
-        sur
+        Ce document est une copie de celui disponible sur
         <a
           href="https://www.interieur.gouv.fr/Actualites/L-actu-du-Ministere/Attestation-de-deplacement-derogatoire"
           title="Attestation de déplacement dérogatoire"
         >
-          le site du ministère de l'intérieur </a
+          le site du ministère de l'intérieur</a
         >.
       </p>
       <p>
@@ -128,7 +133,9 @@
       </p>
     </footer>
     <script>
+      // SAVE/RESTORE THE FORM TO/FROM LOCALSTORAGE
       let serializedForm = {};
+      // Restore form from localstorage if previous data was stored
       const fromStorage = localStorage.getItem(window.location.href);
       if (fromStorage) {
         serializedForm = JSON.parse(fromStorage);
@@ -145,6 +152,7 @@
         });
       }
 
+      // Save the form to localstorage on change
       function saveToLocalStorage() {
         const json = JSON.stringify(serializedForm);
         localStorage.setItem(window.location.href, json);
