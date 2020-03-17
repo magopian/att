@@ -334,8 +334,8 @@
           title="Article sur le site de Numérama"
           >Numérama</a
         >
-        il est possible de montrer une version numérique (cette page remplie) en
-        lieu et place d'une version papier.
+        il est possible de montrer une version numérique en lieu et place d'une
+        version papier.
       </p>
       <p>
         Le code source est disponible sur
@@ -539,7 +539,9 @@
           canvas.addEventListener("touchstart", touchstartEventHandler);
           canvas.addEventListener("touchmove", touchMoveEventHandler);
           canvas.addEventListener("touchend", mouseUpEventHandler);
-          canvas.addEventListener("touchcancel", function(event) {event.preventDefault()})
+          canvas.addEventListener("touchcancel", function(event) {
+            event.preventDefault();
+          });
           touchstartEventHandler(detectEvent);
         }
       }
