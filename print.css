@@ -1,0 +1,10 @@
+body {
+  font-family: "Sen", sans-serif;
+}
+
+input,
+button,
+textarea {
+  font-size: 1rem;
+  font-family: "Sen", sans-serif;
+}
