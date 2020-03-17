@@ -126,3 +126,9 @@ footer {
   width: 3.8cm;
   text-align: right;
 }
+
+@media print {
+  footer {
+    display: none;
+  }
+}
