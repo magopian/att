@@ -478,50 +478,50 @@
         }
       }
 
-      function mouseDownEventHandler(e) {
+      function mouseDownEventHandler(event) {
         paint = true;
-        var x = e.pageX - canvas.offsetLeft;
-        var y = e.pageY - canvas.offsetTop;
+        var x = event.pageX - canvas.offsetLeft;
+        var y = event.pageY - canvas.offsetTop;
         if (paint) {
           addClick(x, y, false);
           drawNew();
         }
       }
 
-      function touchstartEventHandler(e) {
+      function touchstartEventHandler(event) {
         event.preventDefault();
         paint = true;
         if (paint) {
           addClick(
-            e.touches[0].pageX - canvas.offsetLeft,
-            e.touches[0].pageY - canvas.offsetTop,
+            event.touches[0].pageX - canvas.offsetLeft,
+            event.touches[0].pageY - canvas.offsetTop,
             false
           );
           drawNew();
         }
       }
 
-      function mouseUpEventHandler(e) {
-        e.preventDefault();
+      function mouseUpEventHandler(event) {
+        event.preventDefault();
         context.closePath();
         paint = false;
       }
 
-      function mouseMoveEventHandler(e) {
-        var x = e.pageX - canvas.offsetLeft;
-        var y = e.pageY - canvas.offsetTop;
+      function mouseMoveEventHandler(event) {
+        var x = event.pageX - canvas.offsetLeft;
+        var y = event.pageY - canvas.offsetTop;
         if (paint) {
           addClick(x, y, true);
           drawNew();
         }
       }
 
-      function touchMoveEventHandler(e) {
+      function touchMoveEventHandler(event) {
         event.preventDefault();
         if (paint) {
           addClick(
-            e.touches[0].pageX - canvas.offsetLeft,
-            e.touches[0].pageY - canvas.offsetTop,
+            event.touches[0].pageX - canvas.offsetLeft,
+            event.touches[0].pageY - canvas.offsetTop,
             true
           );
           drawNew();
