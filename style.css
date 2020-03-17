@@ -1,0 +1,128 @@
+@font-face {
+  font-family: "Marianne";
+  src: url("./fonts/Marianne-Regular.woff2") format("woff2"), url("./fonts/Marianne-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Marianne";
+  src: url("./fonts/Marianne-Bold.woff2") format("woff2"), url("./fonts/Marianne-Bold.woff") format("woff");
+  font-weight: 800;
+  font-style: normal;
+}
+
+html {
+  font-family: "Marianne", "Open Sans", sans-serif;
+  background-color: #eaeaea;
+  font-size: 11pt;
+  line-height: 1.3;
+  letter-spacing: -0.03mm;
+}
+
+main {
+  width: 21cm;
+  height: 29.7cm;
+  padding: 3cm 1.7cm;
+  background-color: white;
+  margin: 2cm auto;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+h1 {
+  font-size: 15pt;
+  margin: 0;
+}
+
+p {
+  margin: 3mm 0;
+}
+
+header {
+  text-align: center;
+}
+
+#declaration-form {
+  margin-top: 1.3cm;
+  font-size: 12pt;
+  text-align: justify;
+}
+
+.reason {
+  display: flex;
+  margin-bottom: 5mm;
+}
+
+.reason > div {
+  flex: 0 0 1.3cm;
+}
+
+.form-footer {
+  text-align: right;
+  font-size: 10pt;
+  margin-top: 1.3cm;
+}
+
+.form-line {
+  margin: 4.5mm 0;
+  display: flex;
+}
+
+.form-line label {
+  flex: 0 0 2.8cm;
+}
+
+.form-line input, .form-line textarea {
+  flex: 1;
+}
+
+.form-line:last-of-type {
+  margin-bottom: 1.1cm;
+}
+
+textarea,
+input {
+  background-color: transparent;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 22"><rect y="21" width="1" height="1"/></svg> ');
+  background-size: 4px 22px;
+  line-height: 6mm;
+  font: inherit;
+  border: none;
+  margin: 0;
+}
+
+input {
+  border: 2px black;
+  height: 6mm;
+}
+
+input[type=checkbox] {
+  width: 5mm;
+  height: 5mm;
+}
+
+input[type=file] {
+  background-image: none;
+}
+
+textarea {
+  height: 1.8cm;
+}
+
+
+footer {
+  color: #333;
+  width: 21cm;
+  margin: 0 auto 2cm;
+}
+
+#localisation {
+  width: 3cm;
+}
+
+#date {
+  width: 3.8cm;
+  text-align: right;
+}

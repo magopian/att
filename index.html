@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
   <head>
     <title>ATTESTATION DE DÉPLACEMENT DÉROGATOIRE</title>
     <meta charset="utf-8" />
@@ -18,91 +18,122 @@
       content="En application de l’article 1er du décret du 16 mars 2020 portant réglementation des déplacements dans le cadre de la lutte contre la propagation du virus Covid-19"
     />
     <meta name="og:url" content="https://magopian.github.io/att" />
-    <meta
-      name="og:site_name"
-      content="ATTESTATION DE DÉPLACEMENT DÉROGATOIRE"
-    />
+    <meta name="og:site_name" content="ATTESTATION DE DÉPLACEMENT DÉROGATOIRE"/>
     <meta name="og:locale" content="fr_FR" />
     <meta name="og:type" content="website" />
-    <style>
-      body {
-        font: 16px sans-serif;
-        margin: 0 auto;
-        text-align: justify;
-        width: 210mm;
-      }
-      h1,
-      h2 {
-        text-align: center;
-      }
-      h2 {
-        font-size: 16px;
-        font-weight: normal;
-      }
-    </style>
+
+    <link rel="stylesheet" href="style.css">
   </head>
+
   <body>
-    <h1>ATTESTATION DE DÉPLACEMENT DÉROGATOIRE</h1>
-    <h2>
-      En application de l’article 1er du décret du 16 mars 2020 portant
-      réglementation des déplacements dans le cadre de la lutte contre la
-      propagation du virus Covid-19 :
-    </h2>
 
-    <form id="declaration-form">
-      <p>Je soussigné(e)</p>
-      <p>Mme / M. <input type="text" name="nom" /></p>
-      <p>Né(e) le : <input type="text" name="date-naissance" /></p>
-      <p>
-        Demeurant :
-        <textarea type="text" name="adresse" rows="3" cols="40"></textarea>
-      </p>
+    <main>
 
-      <p>
-        certifie que mon déplacement est lié au motif suivant (cocher la case)
-        autorisé par l’article 1er du décret du 16 mars 2020 portant
-        réglementation des déplacements dans le cadre de la lutte contre la
-        propagation du virus Covid-19 :
-      </p>
-      <p>
-        <input type="checkbox" name="domicile" /> déplacements entre le domicile
-        et le lieu d’exercice de l’activité professionnelle, lorsqu’ils sont
-        indispensables à l’exercice d’activités ne pouvant être organisées sous
-        forme de télétravail (sur justificatif permanent) ou déplacements
-        professionnels ne pouvant être différés ;
-      </p>
-      <p>
-        <input type="checkbox" name="courses" /> déplacements pour effectuer des
-        achats de première nécessité dans des établissements autorisés (liste
-        sur gouvernement.fr) ;
-      </p>
-      <p>
-        <input type="checkbox" name="sante" /> déplacements pour motif de santé
-        ;
-      </p>
-      <p>
-        <input type="checkbox" name="famille" /> déplacements pour motif
-        familial impérieux, pour l’assistance aux personnes vulnérables ou la
-        garde d’enfants ;
-      </p>
-      <p>
-        <input type="checkbox" name="sport" /> déplacements brefs, à proximité
-        du domicile, liés à l’activité physique individuelle des personnes, à
-        l’exclusion de toute pratique sportive collective, et aux besoins des
-        animaux de compagnie.
-      </p>
-      <p>
-        Fait à <input type="text" name="fait-a" />, le
-        <input type="date" name="date" />
-      </p>
+      <header>
+        <h1>ATTESTATION DE DÉPLACEMENT DÉROGATOIRE</h1>
+        <p>
+          En application de l’article 1<sup>er</sup> du décret du 16 mars 2020 portant
+          réglementation des<br/> déplacements dans le cadre de la lutte contre la
+          propagation du virus Covid-19 :
+        </p>
+      </header>
 
-      <p>
-        Signature :
-        <input type="file" name="signature" accept="image/*" />
-      </p>
-    </form>
+      <form id="declaration-form">
 
-    <hr />
+        <div>
+          <p>Je soussigné(e)</p>
+
+          <div class="form-line">
+            <label for="nom">Mme / M.</label>
+            <input type="text" name="nom" id="nom"/>
+          </div>
+
+          <div class="form-line">
+            <label for="date-naissance">Né(e) le :</label>
+            <input type="text" name="date-naissance" id="date-naissance"/>
+          </div>
+
+          <div class="form-line">
+            <label for="adresse">Demeurant :</label>
+            <textarea name="adresse" id="adresse" rows="3"></textarea>
+          </div>
+        </div>
+
+        <p>
+          certifie que mon déplacement est lié au motif suivant (cocher la case)
+          autorisé par l’article 1er du décret du 16 mars 2020 portant
+          réglementation des déplacements dans le cadre de la lutte contre la
+          propagation du virus Covid-19 :
+        </p>
+
+        <div class="reason">
+          <div>
+            <input type="checkbox" name="domicile" id="domicile">
+          </div>
+          <label for="domicile">
+            déplacements entre le domicile et le lieu d’exercice de l’activité professionnelle, lorsqu’ils sont
+            indispensables à l’exercice d’activités ne pouvant être organisées sous forme de télétravail (sur
+            justificatif permanent) ou déplacements professionnels ne pouvant être différés ;
+          </label>
+        </div>
+
+
+        <div class="reason">
+          <div>
+            <input type="checkbox" name="reason" id="essential">
+          </div>
+          <label for="essential">
+            déplacements pour effectuer des achats de première nécessité dans des établissements autorisés (liste sur
+            gouvernement.fr) ;
+          </label>
+        </div>
+
+        <div class="reason">
+          <div>
+            <input type="checkbox" name="reason" id="sante">
+          </div>
+          <label for="sante">
+            déplacements pour motif de santé ;
+          </label>
+        </div>
+
+        <div class="reason">
+          <div>
+            <input type="checkbox" name="reason" id="famille">
+          </div>
+          <label for="famille">
+            déplacements pour motif familial impérieux, pour l’assistance aux personnes vulnérables ou la garde d’enfants;
+          </label>
+        </div>
+
+        <div class="reason">
+          <div>
+            <input type="checkbox" name="reason" id="sport">
+          </div>
+          <label for="sport">
+            déplacements brefs, à proximité du domicile, liés à l’activité physique individuelle
+            des personnes, à l’exclusion de toute pratique sportive collective, et aux besoins
+            des animaux de compagnie.
+          </label>
+        </div>
+
+        <div class="form-footer">
+          <p>
+            <label for="localisation">Fait à</label> <input type="text" name="localisation" id="localisation" />,
+            <label for="date">le</label> <input type="date" name="date" id="date" />
+          </p>
+
+          <p>
+            <label for="signature">Signature :</label>
+            <input type="file" name="signature" id="signature" accept="image/*" />
+          </p>
+
+        </div>
+
+      </form>
+
+    </main>
+
     <footer>
       <p>
         Ce document est une copie de celui disponible sur
@@ -132,6 +163,7 @@
         >
       </p>
     </footer>
+
     <script>
       // SAVE/RESTORE THE FORM TO/FROM LOCALSTORAGE
       let serializedForm = {};
