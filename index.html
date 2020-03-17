@@ -124,6 +124,7 @@
       <p id="signature-container">
         <canvas id="dessiner-signature" width="800" height="400"> </canvas>
         <button id="sauvegarder">Valider cette signature</button>
+        <button id="reset">Recommencer</button>
       </p>
       <p id="signature-display-container">
         <img src="" alt="Signature" id="signature" />
@@ -167,7 +168,8 @@
       // Various html nodes
       const saveSignature = document.getElementById("sauvegarder");
       const signature = document.getElementById("signature");
-      const resetSignature = document.getElementById("refaire-signature");
+      const restartSignature = document.getElementById("refaire-signature");
+      const resetSignature = document.getElementById("reset");
       const form = document.getElementById("declaration-form");
       const signatureWrapper = document.getElementById("signature-wrapper");
       signatureWrapper.className = "drawing";
@@ -183,7 +185,6 @@
         Object.keys(serializedForm).map(function(formElementName) {
           if (formElementName === "signature") {
             // Special casing the signature which isn't a form element.
-            console.log("signature present");
             signature.src = serializedForm["signature"];
             signatureWrapper.className = "displaying";
           } else {
@@ -379,6 +380,10 @@
       };
 
       resetSignature.onclick = function() {
+        context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+      };
+
+      restartSignature.onclick = function() {
         context.clearRect(0, 0, context.canvas.width, context.canvas.height);
         signatureWrapper.className = "drawing";
       };
