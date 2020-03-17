@@ -489,6 +489,7 @@
       }
 
       function touchstartEventHandler(e) {
+        event.preventDefault();
         paint = true;
         if (paint) {
           addClick(
@@ -501,6 +502,7 @@
       }
 
       function mouseUpEventHandler(e) {
+        e.preventDefault();
         context.closePath();
         paint = false;
       }
@@ -515,6 +517,7 @@
       }
 
       function touchMoveEventHandler(e) {
+        event.preventDefault();
         if (paint) {
           addClick(
             e.touches[0].pageX - canvas.offsetLeft,
@@ -536,6 +539,7 @@
           canvas.addEventListener("touchstart", touchstartEventHandler);
           canvas.addEventListener("touchmove", touchMoveEventHandler);
           canvas.addEventListener("touchend", mouseUpEventHandler);
+          canvas.addEventListener("touchcancel", function(event) {event.preventDefault()})
           touchstartEventHandler(detectEvent);
         }
       }
