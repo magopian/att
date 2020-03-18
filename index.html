@@ -161,14 +161,29 @@
       }
 
       @media print {
-            footer {
-                display: none;
-            }
-
-            #refaire-signature {
-                display: none;
-            }
+        @page {
+          margin: 0;
         }
+
+        header,
+        footer {
+          display: none;
+        }
+
+        #container {
+          box-shadow: none;
+        }
+
+        #signature {
+          display: block;
+          height: 140px;
+          margin: 0 auto;
+        }
+
+        #refaire-signature {
+          display: none;
+        }
+      }
 
       @media screen and (max-width: 640px) {
         * {
