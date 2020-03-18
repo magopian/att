@@ -37,6 +37,17 @@
         width: 210mm;
       }
 
+      a,
+      a:visited {
+        color: #0053b3;
+        font-weight: 500;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
       h1,
       h2 {
         text-align: center;
@@ -47,10 +58,12 @@
       }
 
       header {
-        background: #ffb5b5;
+        background: #ff8894;
+        border-bottom: 2px solid #dc3545;
         box-shadow: 0 5px 10px rgba(0, 0, 0, 0.11);
-        border-radius: 5px;
+        border-radius: 0 0px 6px 6px;
         padding: 5px 20px;
+        text-align: center;
         margin-bottom: 1em;
       }
 
@@ -160,6 +173,125 @@
         display: block;
       }
 
+      .modal-window {
+        position: fixed;
+        background-color: rgba(80, 80, 80, 0.75);
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        visibility: hidden;
+        opacity: 0;
+        margin: 0;
+        -webkit-transition: all 0.3s;
+        -moz-transition: all 0.3s;
+        transition: all 0.3s;
+      }
+
+      #infobulle p {
+        line-height: 24px;
+      }
+
+      #infobulle {
+        position: relative;
+        text-align: left;
+        width: 640px;
+        max-width: 90%;
+        margin: 10% auto;
+        padding: 1rem;
+        background: #fff;
+        color: #444;
+        border-radius: 4px;
+        border: 1px solid #686868;
+      }
+
+      .modal-close span {
+        display: inline-block;
+        font-size: 18px;
+        padding: 8px 15px;
+        border-radius: 2px;
+        transition: all 0.15s ease-in-out;
+      }
+      .modal-close span:hover {
+        color: white;
+        background-color: #686868;
+      }
+
+      .modal-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        margin: 0;
+      }
+
+      .modal-close:hover {
+        color: #000;
+        cursor: pointer;
+      }
+
+      .text-info {
+        color: #17a2b8;
+      }
+      .text-danger {
+        color: #dc3545;
+      }
+      .bg-danger {
+        background-color: #dc3545;
+      }
+
+      .modal-window h1 {
+        margin: 0 0 15px;
+      }
+
+      .btn-container {
+        text-align: center;
+      }
+
+      .btn-container button:hover {
+        color: #fff;
+        background-color: #343a40;
+        border-color: #343a40;
+      }
+
+      .btn-container button {
+        font-weight: 400;
+        text-align: center;
+        cursor: pointer;
+        white-space: nowrap;
+        vertical-align: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        border: 1px solid #343a40;
+        padding: 6px 12px;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: 4px;
+        transition: all 0.15s ease-in-out;
+        color: #343a40;
+        background-color: transparent;
+        background-image: none;
+      }
+
+      #help-button {
+        position: fixed;
+        right: 2%;
+        bottom: 2%;
+        border-radius: 50%;
+        border: 0 none;
+        background-color: white;
+        font-size: 50px;
+        font-weight: 600;
+        cursor: pointer;
+        color: #0053b3;
+        box-shadow: 0 0px 5px 2px rgba(215, 210, 210, 0.3);
+        width: 70px;
+        line-height: 63px;
+        text-align: center;
+        padding-top: 8px;
+      }
+
       @media print {
         @page {
           margin: 0;
@@ -249,23 +381,29 @@
   </head>
   <body>
     <header>
+      <p><b>ATTENTION</b> <br /></p>
       <p>
-        ATTENTION : une version numérique n'est plus recevable, cf
+        une version numérique n'est plus recevable - Sources :
         <a
           href="https://www.numerama.com/politique/611777-attestation-de-deplacement-que-faire-sans-imprimante-ni-papier.html"
           title="article de numérama : version numérique non recevable"
-          >numérama</a
-        >
-        et
+          >Numérama</a
+        >,
         <a
           href="https://www.bfmtv.com/tech/confinement-finalement-l-attestation-sur-smartphone-ne-suffit-pas-1877104.html"
           title="article de bfmtv : version numérique non recevable"
-          >bfmtv</a
+          >BFMTV</a
+        >
+        et
+        <a
+          href="https://twitter.com/Place_Beauvau/status/1240236276416118784"
+          title="Tweet du ministère de l'intérieur : version numérique non recevable"
+          >ministère de l'intérieur</a
         >.
       </p>
       <p>
-        Si vous voulez utiliser ce site, il vous faudra imprimer la page une
-        fois remplie pour la présenter lors d'un contrôle.
+        Une fois le document rempli, vous devrez l'imprimer pour pouvoir le
+        présenter lors d'un contrôle.
       </p>
     </header>
     <div id="container">
@@ -358,14 +496,19 @@
           <div id="canvas-wrapper">
             <canvas id="dessiner-signature"> </canvas>
           </div>
-          <button id="sauvegarder">Valider cette signature</button>
-          <button id="reset">Recommencer</button>
+          <div class="btn-container">
+            <button id="sauvegarder">Sauvegarder</button>
+            <button id="reset">Recommencer</button>
+          </div>
         </div>
         <div id="signature-display-container">
           <img src="" alt="Signature" id="signature" />
-          <button id="refaire-signature">
-            Refaire cette signature
-          </button>
+          <div class="btn-container">
+            <button id="refaire-signature">
+              Refaire cette signature
+            </button>
+            <button onclick="print()">Imprimer</button>
+          </div>
         </div>
       </div>
     </div>
@@ -390,8 +533,70 @@
         >.
       </p>
     </footer>
+    <div id="help-button" onclick="openModal()">
+      ?
+    </div>
+    <div id="open-modal" class="modal-window">
+      <div id="infobulle">
+        <div class="modal-close">
+          <span onclick="closeModal()" title="Fermer la fenêtre">
+            &times;
+          </span>
+        </div>
+        <h1>Informations</h1>
+
+        <p>
+          <b>1. La version numérique est-elle recevable ?</b><br />
+
+          <span class="text-danger">
+            Mise à jour du 18/03 à 14h : la version numérique n'est plus
+            recevable
+            <br />
+            Sources :
+            <a
+              href="https://www.numerama.com/politique/611777-attestation-de-deplacement-que-faire-sans-imprimante-ni-papier.html"
+              title="article de numérama : version numérique non recevable"
+              >Numérama</a
+            >,
+            <a
+              href="https://www.bfmtv.com/tech/confinement-finalement-l-attestation-sur-smartphone-ne-suffit-pas-1877104.html"
+              title="article de bfmtv : version numérique non recevable"
+              >BFMTV</a
+            >
+            et
+            <a
+              href="https://twitter.com/Place_Beauvau/status/1240236276416118784"
+              title="Tweet du ministère de l'intérieur : version numérique non recevable"
+              >ministère de l'intérieur</a
+            >.
+          </span>
+        </p>
+        <p>
+          <b>2. Ce document vous protège t-il d'une amende : non </b><br />
+          Si votre déplacement est jugé injustifié, vous êtes passible d'une
+          amende de 135 €.
+          <br />
+          En cas de doute sur ces restrictions de déplacement, vous pouvez
+          consulter
+          <a
+            target="_blank"
+            title="Télécharger la FAQ du gourvernement sur les déplacements autorisés"
+            href="https://www.gouvernement.fr/sites/default/files/contenu/piece-jointe/2020/03/faq-restrictions.pdf"
+            >les questions / réponses en cliquant ici</a
+          >.
+        </p>
+        <p>
+          <b>3. Où sont stockées nos informations personelles ?</b><br />
+          Sur votre navigateur internet, aucune donnée n'est transmise ou
+          conservée par un tiers. Par ailleurs ce site n'utilise ni cookie ni
+          tracker.
+        </p>
+      </div>
+    </div>
+
     <script>
       // Various html nodes
+      const modal = document.getElementById("open-modal");
       const saveSignature = document.getElementById("sauvegarder");
       const signature = document.getElementById("signature");
       const restartSignature = document.getElementById("refaire-signature");
@@ -428,6 +633,20 @@
             }
           }
         });
+      }
+
+      function openModal() {
+        modal.style.opacity = "1";
+        modal.style.visibility = "visible";
+      }
+      function closeModal() {
+        localStorage.setItem("modal-closed", true);
+        modal.style.opacity = "0";
+        modal.style.visibility = "hidden";
+      }
+
+      if (!localStorage.getItem("modal-closed")) {
+        openModal();
       }
 
       // Save the form to localstorage on change
