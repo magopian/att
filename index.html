@@ -506,7 +506,7 @@
             <button id="refaire-signature">
               Refaire cette signature
             </button>
-            <button onclick="print()" id="imprimer">Imprimer</button>
+            <button id="imprimer">Imprimer</button>
           </div>
         </div>
       </div>
@@ -608,6 +608,7 @@
       canvas.width = canvasWrapper.clientWidth;
       canvas.height = canvasWrapper.clientWidth * 0.5625;
       const context = canvas.getContext("2d");
+      const imprimer = document.getElementById("imprimer");
 
       // SAVE/RESTORE THE FORM TO/FROM LOCALSTORAGE
       let serializedForm = {};
@@ -839,6 +840,15 @@
       restartSignature.onclick = function() {
         context.clearRect(0, 0, context.canvas.width, context.canvas.height);
         signatureWrapper.className = "drawing";
+      };
+
+      imprimer.onclick = function() {
+        try {
+          window.print();
+        } catch {
+          imprimer.style.display = "none";
+          alert("Cette fonctionnalité n'est pas présente sur votre appareil");
+        }
       };
     </script>
   </body>
