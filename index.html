@@ -298,7 +298,10 @@
         }
 
         header,
-        footer {
+        footer,
+        #refaire-signature,
+        #imprimer,
+        #help-button {
           display: none;
         }
 
@@ -310,10 +313,6 @@
           display: block;
           height: 140px;
           margin: 0 auto;
-        }
-
-        #refaire-signature {
-          display: none;
         }
       }
 
@@ -507,7 +506,7 @@
             <button id="refaire-signature">
               Refaire cette signature
             </button>
-            <button onclick="print()">Imprimer</button>
+            <button onclick="print()" id="imprimer">Imprimer</button>
           </div>
         </div>
       </div>
