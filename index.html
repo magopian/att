@@ -636,17 +636,18 @@
       }
 
       function openModal() {
-        console.log("OPEN");
         modal.style.opacity = "1";
         modal.style.visibility = "visible";
       }
       function closeModal() {
-        console.log("CLOSE");
+        localStorage.setItem("modal-closed", true);
         modal.style.opacity = "0";
         modal.style.visibility = "hidden";
       }
 
-      openModal();
+      if (!localStorage.getItem("modal-closed")) {
+        openModal();
+      }
 
       // Save the form to localstorage on change
       function saveToLocalStorage(key, value) {
