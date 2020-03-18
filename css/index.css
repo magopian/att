@@ -1,0 +1,184 @@
+body {
+    background-color: #ffffff;
+    font: 16px sans-serif;
+    margin: 0 auto;
+    text-align: justify;
+    width: 210mm;
+}
+
+h1,
+h2 {
+    text-align: center;
+}
+h2 {
+    font-size: 16px;
+    font-weight: normal;
+}
+
+#container {
+    border-radius: 4px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.11);
+    background-color: #fff;
+    padding: 8mm 15mm;
+}
+
+label {
+    min-width: 100px;
+    display: inline-block;
+    padding-top: 5px;
+    vertical-align: top;
+}
+
+#raisons {
+    margin: 40px auto;
+}
+
+#date-lieu {
+    margin-bottom: 50px;
+}
+
+#date-lieu label {
+    min-width: 0px;
+    margin-right: 10px;
+}
+
+input[type="text"],
+textarea {
+    width: 340px;
+    display: inline-block;
+}
+
+input[type="checkbox"] {
+    width: 3%;
+    display: inline-block;
+}
+
+#raisons label {
+    width: 94%;
+    display: inline-block;
+    padding-top: 0px;
+    cursor: pointer;
+    text-align: justify;
+}
+
+div {
+    margin: 12px auto;
+}
+
+input[type="date"],
+input[type="text"],
+textarea,
+#canvas-wrapper {
+    box-sizing: border-box;
+    font-size: 14px;
+    padding: 4px 10px;
+    line-height: 20px;
+    font-weight: 500;
+    font-family: inherit;
+    border-radius: 2px;
+    -webkit-appearance: none;
+    outline: none;
+    border: none;
+    background-color: #f0f4fe;
+    border-bottom: 1px dotted #686868;
+    -webkit-transition: border 0.3s ease;
+    transition: border 0.3s ease;
+}
+
+footer {
+    background: #e0edff;
+    color: rgb(43, 78, 119);
+    border-radius: 5px;
+    padding: 5px 20px;
+    margin-bottom: 1em;
+}
+
+#canvas-wrapper {
+    width: 100%;
+}
+
+canvas {
+    touch-action: none;
+}
+#signature-wrapper {
+    display: none;
+}
+#signature-wrapper.drawing,
+#signature-wrapper.displaying {
+    display: block;
+}
+#signature-wrapper.drawing #signature-container {
+    display: block;
+}
+#signature-wrapper.displaying #signature-container {
+    display: none;
+}
+#signature-wrapper.drawing #signature-display-container {
+    display: none;
+}
+#signature-wrapper.displaying #signature-display-container {
+    display: block;
+}
+.hidden {
+    display: none !important;
+}
+@media screen and (max-width: 640px) {
+    * {
+        max-width: 100%;
+    }
+    html {
+        font-size: 90%;
+    }
+    body {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        background-color: #fff;
+    }
+
+    #container {
+        width: 94%;
+        padding: 0;
+        margin: 0 auto;
+    }
+
+    p {
+        display: block;
+        width: 100%;
+    }
+
+    input[type="date"],
+    input[type="text"],
+    textarea,
+    label {
+        display: block;
+        width: 100%;
+        margin: 8px 0;
+    }
+
+    p {
+        font-size: 15px;
+    }
+    label {
+        font-size: 15px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    h2 {
+        font-size: 16px;
+    }
+
+    input[type="checkbox"] {
+        width: 4%;
+        display: inline-block;
+    }
+
+    #raisons label {
+        width: 92%;
+        display: inline-block;
+        margin-top: -5px;
+    }
+}
