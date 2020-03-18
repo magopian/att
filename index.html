@@ -298,7 +298,10 @@
         }
 
         header,
-        footer {
+        footer,
+        #refaire-signature,
+        #imprimer,
+        #help-button {
           display: none;
         }
 
@@ -310,10 +313,6 @@
           display: block;
           height: 140px;
           margin: 0 auto;
-        }
-
-        #refaire-signature {
-          display: none;
         }
       }
 
@@ -507,7 +506,7 @@
             <button id="refaire-signature">
               Refaire cette signature
             </button>
-            <button onclick="print()">Imprimer</button>
+            <button id="imprimer">Imprimer</button>
           </div>
         </div>
       </div>
@@ -586,7 +585,13 @@
           >.
         </p>
         <p>
-          <b>3. Où sont stockées nos informations personelles ?</b><br />
+          <b>3. Comment sauvegarder cette attestation ?</b><br />
+          Les données sont sauvegardées au fur et à mesure que vous remplissez
+          le formulaire, automatiquement. Revenir sur cette page à tout moment
+          affichera les données que vous avez saisies.
+        </p>
+        <p>
+          <b>4. Où sont stockées nos informations personelles ?</b><br />
           Sur votre navigateur internet, aucune donnée n'est transmise ou
           conservée par un tiers. Par ailleurs ce site n'utilise ni cookie ni
           tracker.
@@ -609,6 +614,7 @@
       canvas.width = canvasWrapper.clientWidth;
       canvas.height = canvasWrapper.clientWidth * 0.5625;
       const context = canvas.getContext("2d");
+      const imprimer = document.getElementById("imprimer");
 
       // SAVE/RESTORE THE FORM TO/FROM LOCALSTORAGE
       let serializedForm = {};
@@ -840,6 +846,15 @@
       restartSignature.onclick = function() {
         context.clearRect(0, 0, context.canvas.width, context.canvas.height);
         signatureWrapper.className = "drawing";
+      };
+
+      imprimer.onclick = function() {
+        try {
+          window.print();
+        } catch {
+          imprimer.style.display = "none";
+          alert("Cette fonctionnalité n'est pas présente sur votre appareil");
+        }
       };
     </script>
   </body>
