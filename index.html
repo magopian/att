@@ -347,6 +347,36 @@
       </p>
     </footer>
     <script>
+      // Get URL params and fill the form
+      function getUrlVars() {
+        var vars = {};
+        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+          vars[key] = value;
+        });
+        return vars;
+      }
+
+      const vars = getUrlVars();
+
+      if (vars["nom"] !== undefined) {
+        document.getElementById('nom').value=decodeURI(vars["nom"]);
+      }
+      if (vars["date"] !== undefined) {
+        document.getElementById('date-naissance').value=decodeURI(vars["date"]);
+      }
+      if (vars["adresse"] !== undefined) {
+        document.getElementById('adresse').value=decodeURI(vars["adresse"]);
+      }
+      if (vars["a"] !== undefined) {
+        document.getElementById('faita').value=decodeURI(vars["a"]);
+      }
+
+      // get today date and fill the input
+      const today = new Date().toISOString().slice(0, 10);
+      console.log(today);
+      document.getElementById('date').value=today;
+
+
       // Various html nodes
       const saveSignature = document.getElementById("sauvegarder");
       const signature = document.getElementById("signature");
