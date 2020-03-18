@@ -28,7 +28,7 @@
     />
     <meta name="og:locale" content="fr_FR" />
     <meta name="og:type" content="website" />
-    <style>
+    <style type="text/css">
       body {
         background-color: #eeeeeb;
         font: 16px sans-serif;
@@ -158,6 +158,31 @@
       }
       #signature-wrapper.displaying #signature-display-container {
         display: block;
+      }
+
+      @media print {
+        @page {
+          margin: 0;
+        }
+
+        header,
+        footer {
+          display: none;
+        }
+
+        #container {
+          box-shadow: none;
+        }
+
+        #signature {
+          display: block;
+          height: 140px;
+          margin: 0 auto;
+        }
+
+        #refaire-signature {
+          display: none;
+        }
       }
 
       @media screen and (max-width: 640px) {
