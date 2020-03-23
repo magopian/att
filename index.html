@@ -506,7 +506,9 @@
             <button id="refaire-signature">
               Refaire cette signature
             </button>
-            <button id="valider">Valider</button>
+            <button id="valider">
+              Je sors de chez moi, générer une déclaration
+            </button>
           </div>
         </div>
       </div>
@@ -853,8 +855,23 @@
         signatureWrapper.className = "drawing";
       };
 
+      const declarationsKey = `${window.location.pathname}-declarations`;
+
+      function getDeclarations() {
+        const declarations = localStorage.getItem(declarationsKey);
+        return declarations ? JSON.parse(declarations) : [];
+      }
+
+      function addDeclaration() {
+        const newDeclaration = [new Date()];
+        // Add a new declaration to the front of the array.
+        const declarations = newDeclaration.concat(getDeclarations());
+        localStorage.setItem(declarationsKey, JSON.stringify(declarations));
+      }
+
       valider.onclick = function() {
         valider.style.display = "none";
+        addDeclaration();
       };
     </script>
   </body>
