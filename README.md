@@ -18,3 +18,10 @@ L'idée du projet est d'être le plus minimaliste possible. Si possible de le co
 - pas de ressources externes (fonts, images, javascript)
 
 Le but d'être minimaliste c'est que ça reste très léger sur la bande passante, la puissance nécessaire sur les devices, et sur l'hébergement.
+
+
+## V2 : un prototype
+
+Pour voir ce qu'aurais pu donner une attestation de déplacement dérogatoire numérique, qui soit utile pour les utilisateurs, et en même temps permette un contrôle plus fin de la part des forces de l'ordre.
+
+C'est sur la [branche v2](https://github.com/magopian/att/tree/v2), et testable en ligne sur https://magopian.github.io/att
