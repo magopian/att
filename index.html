@@ -537,6 +537,11 @@
           </button>
         </div>
       </div>
+
+      <details>
+        <summary>Liste des sorties</summary>
+        <ul id="liste-sorties">
+        </ul>
     </div>
 
     <footer>
@@ -646,6 +651,7 @@
       const date = document.getElementById("date");
       const depuis = document.getElementById("depuis");
       const retour = document.getElementById("retour");
+      const sorties = document.getElementById("liste-sorties");
 
       // SAVE/RESTORE THE FORM TO/FROM LOCALSTORAGE
       let serializedForm = {};
@@ -883,16 +889,24 @@
         signatureWrapper.className = "drawing";
       };
 
+      function dateToString(date) {
+        return date.toLocaleString().slice(0, 21);
+      }
+
+      function stringToDate(strDate) {
+        return new Date(strDate);
+      }
+
       const declarationsKey = `${window.location.pathname}-declarations`;
+
+      function parseDeclarations(str) {
+        const declarations = JSON.parse(str);
+        return declarations.map(d => stringToDate(d));
+      }
 
       function getDeclarations() {
         const declarations = localStorage.getItem(declarationsKey);
-        return declarations ? JSON.parse(declarations) : [];
-      }
-
-      function getLastDeclaration() {
-        const declarations = getDeclarations();
-        return declarations[0];
+        return declarations ? parseDeclarations(declarations) : [];
       }
 
       function addDeclaration() {
@@ -900,17 +914,30 @@
         // Add a new declaration to the front of the array.
         const declarations = newDeclaration.concat(getDeclarations());
         localStorage.setItem(declarationsKey, JSON.stringify(declarations));
+        return declarations;
       }
 
       valider.onclick = function() {
         container.className = "sortie-en-cours";
-        addDeclaration();
-        depuis.textContent = getLastDeclaration();
+        const declarations = addDeclaration();
+        depuis.textContent = dateToString(declarations[0]);
+        updateListeSorties(declarations);
       };
 
       retour.onclick = function() {
         container.className = "";
       };
+
+      function updateListeSorties(declarations) {
+        sorties.textContent = ""; // Remove all the children.
+        const list = declarations.map(function(declaration) {
+          const li = document.createElement("li");
+          li.textContent = dateToString(declaration);
+          sorties.append(li);
+        });
+      }
+
+      updateListeSorties(getDeclarations());
     </script>
   </body>
 </html>
