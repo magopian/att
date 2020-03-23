@@ -137,6 +137,10 @@
         transition: border 0.3s ease;
       }
 
+      #container.sortie-en-cours #valider {
+        display: none;
+      }
+
       #sortie {
         display: none;
       }
@@ -309,6 +313,7 @@
         footer,
         #refaire-signature,
         #valider,
+        #sortie,
         #help-button {
           display: none;
         }
@@ -514,6 +519,8 @@
             <button id="refaire-signature">
               Refaire cette signature
             </button>
+          </div>
+          <div class="btn-container">
             <button id="valider">
               Je sors de chez moi, générer une déclaration
             </button>
@@ -524,6 +531,11 @@
       <div id="sortie">
         Je suis sorti depuis
         <span id="depuis"></span>
+        <div class="btn-container">
+          <button id="retour">
+            Je suis de retour chez moi
+          </button>
+        </div>
       </div>
     </div>
 
@@ -633,6 +645,7 @@
       const valider = document.getElementById("valider");
       const date = document.getElementById("date");
       const depuis = document.getElementById("depuis");
+      const retour = document.getElementById("retour");
 
       // SAVE/RESTORE THE FORM TO/FROM LOCALSTORAGE
       let serializedForm = {};
@@ -890,10 +903,13 @@
       }
 
       valider.onclick = function() {
-        valider.style.display = "none";
         container.className = "sortie-en-cours";
         addDeclaration();
         depuis.textContent = getLastDeclaration();
+      };
+
+      retour.onclick = function() {
+        container.className = "";
       };
     </script>
   </body>
