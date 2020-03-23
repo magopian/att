@@ -615,6 +615,7 @@
       canvas.height = canvasWrapper.clientWidth * 0.5625;
       const context = canvas.getContext("2d");
       const valider = document.getElementById("valider");
+      const date = document.getElementById("date");
 
       // SAVE/RESTORE THE FORM TO/FROM LOCALSTORAGE
       let serializedForm = {};
@@ -640,6 +641,10 @@
           }
         });
       }
+
+      // Overwrite the date with today's date.
+      date.value = new Date().toISOString().slice(0, 10);
+      date.setAttribute("disabled", true);
 
       function openModal() {
         modal.style.opacity = "1";
