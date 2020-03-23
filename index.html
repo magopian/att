@@ -137,6 +137,14 @@
         transition: border 0.3s ease;
       }
 
+      #sortie {
+        display: none;
+      }
+
+      #container.sortie-en-cours #sortie {
+        display: block;
+      }
+
       footer {
         background: #e0edff;
         box-shadow: 0 5px 10px rgba(0, 0, 0, 0.11);
@@ -512,6 +520,11 @@
           </div>
         </div>
       </div>
+
+      <div id="sortie">
+        Je suis sorti depuis
+        <span id="depuis"></span>
+      </div>
     </div>
 
     <footer>
@@ -603,6 +616,7 @@
 
     <script>
       // Various html nodes
+      const container = document.getElementById("container");
       const modal = document.getElementById("open-modal");
       const saveSignature = document.getElementById("sauvegarder");
       const signature = document.getElementById("signature");
@@ -618,6 +632,7 @@
       const context = canvas.getContext("2d");
       const valider = document.getElementById("valider");
       const date = document.getElementById("date");
+      const depuis = document.getElementById("depuis");
 
       // SAVE/RESTORE THE FORM TO/FROM LOCALSTORAGE
       let serializedForm = {};
@@ -862,6 +877,11 @@
         return declarations ? JSON.parse(declarations) : [];
       }
 
+      function getLastDeclaration() {
+        const declarations = getDeclarations();
+        return declarations[0];
+      }
+
       function addDeclaration() {
         const newDeclaration = [new Date()];
         // Add a new declaration to the front of the array.
@@ -871,7 +891,9 @@
 
       valider.onclick = function() {
         valider.style.display = "none";
+        container.className = "sortie-en-cours";
         addDeclaration();
+        depuis.textContent = getLastDeclaration();
       };
     </script>
   </body>
