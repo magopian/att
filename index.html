@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>ATTESTATION DE DÉPLACEMENT DÉROGATOIRE</title>
+    <title>ATTESTATION DE DÉPLACEMENT DÉROGATOIRE (v2)</title>
     <meta charset="utf-8" />
     <meta
       name="description"
@@ -300,7 +300,7 @@
         header,
         footer,
         #refaire-signature,
-        #imprimer,
+        #valider,
         #help-button {
           display: none;
         }
@@ -406,7 +406,7 @@
       </p>
     </header>
     <div id="container">
-      <h1>ATTESTATION DE DÉPLACEMENT DÉROGATOIRE</h1>
+      <h1>ATTESTATION DE DÉPLACEMENT DÉROGATOIRE (V2)</h1>
       <h2>
         En application de l’article 1er du décret du 16 mars 2020 portant
         réglementation des déplacements dans le cadre de la lutte contre la
@@ -506,7 +506,7 @@
             <button id="refaire-signature">
               Refaire cette signature
             </button>
-            <button id="imprimer">Imprimer</button>
+            <button id="valider">Valider</button>
           </div>
         </div>
       </div>
@@ -614,7 +614,7 @@
       canvas.width = canvasWrapper.clientWidth;
       canvas.height = canvasWrapper.clientWidth * 0.5625;
       const context = canvas.getContext("2d");
-      const imprimer = document.getElementById("imprimer");
+      const valider = document.getElementById("valider");
 
       // SAVE/RESTORE THE FORM TO/FROM LOCALSTORAGE
       let serializedForm = {};
@@ -848,13 +848,8 @@
         signatureWrapper.className = "drawing";
       };
 
-      imprimer.onclick = function() {
-        try {
-          window.print();
-        } catch {
-          imprimer.style.display = "none";
-          alert("Cette fonctionnalité n'est pas présente sur votre appareil");
-        }
+      valider.onclick = function() {
+        valider.style.display = "none";
       };
     </script>
   </body>
