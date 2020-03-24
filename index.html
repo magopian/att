@@ -141,12 +141,18 @@
         display: none;
       }
 
-      #sortie {
-        display: none;
+      #declaration-modal {
+        opacity: 0;
+        visibility: hidden;
       }
 
-      #container.sortie-en-cours #sortie {
-        display: block;
+      #declaration-modal span {
+        font-weight: bold;
+      }
+
+      #container.sortie-en-cours #declaration-modal {
+        opacity: 1;
+        visibility: visible;
       }
 
       footer {
@@ -313,7 +319,7 @@
         footer,
         #refaire-signature,
         #valider,
-        #sortie,
+        #declaration-modal,
         #help-button {
           display: none;
         }
@@ -528,20 +534,32 @@
         </div>
       </div>
 
-      <div id="sortie">
-        Je suis sorti depuis
-        <span id="depuis"></span>
-        <div class="btn-container">
-          <button id="retour">
-            Je suis de retour chez moi
-          </button>
+      <div id="declaration-modal" class="modal-window">
+        <div id="infobulle">
+          <h1 id="identity-name"></h1>
+          <p>
+            Né le <span id="identity-dob"></span><br />
+            Demeurant au <span id="identity-address"></span><br />
+            Certifie que mon déplacement est lié au motif suivant :<br />
+            <span id="raison-deplacement"></span>
+          </p>
+
+          <div id="sortie">
+            Je suis sorti depuis le
+            <span id="depuis"></span>
+            <div class="btn-container">
+              <button id="retour">
+                Je suis de retour chez moi
+              </button>
+            </div>
+          </div>
+
+          <details>
+            <summary>Liste des sorties</summary>
+            <ul id="liste-sorties"></ul>
+          </details>
         </div>
       </div>
-
-      <details>
-        <summary>Liste des sorties</summary>
-        <ul id="liste-sorties">
-        </ul>
     </div>
 
     <footer>
@@ -652,6 +670,13 @@
       const depuis = document.getElementById("depuis");
       const retour = document.getElementById("retour");
       const sorties = document.getElementById("liste-sorties");
+      const identityName = document.getElementById("identity-name");
+      const identityDoB = document.getElementById("identity-dob");
+      const identityAddress = document.getElementById("identity-address");
+      const raisonDeplacement = document.getElementById("raison-deplacement");
+
+      const declarationsKey = `${window.location.pathname}-declarations`;
+      const sortieEnCoursKey = `${window.location.pathname}-sortie-en-cours`;
 
       // SAVE/RESTORE THE FORM TO/FROM LOCALSTORAGE
       let serializedForm = {};
@@ -897,8 +922,6 @@
         return new Date(strDate);
       }
 
-      const declarationsKey = `${window.location.pathname}-declarations`;
-
       function parseDeclarations(str) {
         const declarations = JSON.parse(str);
         return declarations.map(d => stringToDate(d));
@@ -917,15 +940,33 @@
         return declarations;
       }
 
-      valider.onclick = function() {
+      function getRaisonDeplacement() {
+        const raison = document.querySelector("input:checked");
+        return raison.nextElementSibling.textContent;
+      }
+
+      function displaySortieEnCoursModal() {
         container.className = "sortie-en-cours";
-        const declarations = addDeclaration();
+        identityName.textContent = document.getElementById("nom").value;
+        identityDoB.textContent = document.getElementById(
+          "date-naissance"
+        ).value;
+        identityAddress.textContent = document.getElementById("adresse").value;
+        raisonDeplacement.textContent = getRaisonDeplacement();
+        const declarations = getDeclarations();
         depuis.textContent = dateToString(declarations[0]);
         updateListeSorties(declarations);
+      }
+
+      valider.onclick = function() {
+        const declarations = addDeclaration();
+        localStorage.setItem(sortieEnCoursKey, true);
+        displaySortieEnCoursModal();
       };
 
       retour.onclick = function() {
         container.className = "";
+        localStorage.setItem(sortieEnCoursKey, false);
       };
 
       function updateListeSorties(declarations) {
@@ -938,6 +979,11 @@
       }
 
       updateListeSorties(getDeclarations());
+
+      // Is there a "sortie en cours"?
+      if (JSON.parse(localStorage.getItem(sortieEnCoursKey))) {
+        displaySortieEnCoursModal();
+      }
     </script>
   </body>
 </html>
