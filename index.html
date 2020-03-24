@@ -675,6 +675,9 @@
       const identityAddress = document.getElementById("identity-address");
       const raisonDeplacement = document.getElementById("raison-deplacement");
 
+      const declarationsKey = `${window.location.pathname}-declarations`;
+      const sortieEnCoursKey = `${window.location.pathname}-sortie-en-cours`;
+
       // SAVE/RESTORE THE FORM TO/FROM LOCALSTORAGE
       let serializedForm = {};
       // Restore form from localstorage if previous data was stored
@@ -919,8 +922,6 @@
         return new Date(strDate);
       }
 
-      const declarationsKey = `${window.location.pathname}-declarations`;
-
       function parseDeclarations(str) {
         const declarations = JSON.parse(str);
         return declarations.map(d => stringToDate(d));
@@ -944,22 +945,28 @@
         return raison.nextElementSibling.textContent;
       }
 
-      valider.onclick = function() {
+      function displaySortieEnCoursModal() {
         container.className = "sortie-en-cours";
-        const declarations = addDeclaration();
-        depuis.textContent = dateToString(declarations[0]);
-        updateListeSorties(declarations);
-
         identityName.textContent = document.getElementById("nom").value;
         identityDoB.textContent = document.getElementById(
           "date-naissance"
         ).value;
         identityAddress.textContent = document.getElementById("adresse").value;
         raisonDeplacement.textContent = getRaisonDeplacement();
+        const declarations = getDeclarations();
+        depuis.textContent = dateToString(declarations[0]);
+        updateListeSorties(declarations);
+      }
+
+      valider.onclick = function() {
+        const declarations = addDeclaration();
+        localStorage.setItem(sortieEnCoursKey, true);
+        displaySortieEnCoursModal();
       };
 
       retour.onclick = function() {
         container.className = "";
+        localStorage.setItem(sortieEnCoursKey, false);
       };
 
       function updateListeSorties(declarations) {
@@ -972,6 +979,11 @@
       }
 
       updateListeSorties(getDeclarations());
+
+      // Is there a "sortie en cours"?
+      if (JSON.parse(localStorage.getItem(sortieEnCoursKey))) {
+        displaySortieEnCoursModal();
+      }
     </script>
   </body>
 </html>
