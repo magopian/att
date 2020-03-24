@@ -146,6 +146,10 @@
         visibility: hidden;
       }
 
+      #declaration-modal span {
+        font-weight: bold;
+      }
+
       #container.sortie-en-cours #declaration-modal {
         opacity: 1;
         visibility: visible;
@@ -935,6 +939,11 @@
         return declarations;
       }
 
+      function getRaisonDeplacement() {
+        const raison = document.querySelector("input:checked");
+        return raison.nextElementSibling.textContent;
+      }
+
       valider.onclick = function() {
         container.className = "sortie-en-cours";
         const declarations = addDeclaration();
@@ -946,6 +955,7 @@
           "date-naissance"
         ).value;
         identityAddress.textContent = document.getElementById("adresse").value;
+        raisonDeplacement.textContent = getRaisonDeplacement();
       };
 
       retour.onclick = function() {
