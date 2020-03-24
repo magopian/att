@@ -100,7 +100,7 @@
         display: inline-block;
       }
 
-      input[type="checkbox"] {
+      input[type="radio"] {
         width: 3%;
         display: inline-block;
       }
@@ -384,7 +384,7 @@
           font-size: 16px;
         }
 
-        input[type="checkbox"] {
+        input[type="radio"] {
           width: 4%;
           display: inline-block;
         }
@@ -462,7 +462,7 @@
 
         <div id="raisons">
           <div>
-            <input type="checkbox" name="achats" id="achats" />
+            <input type="radio" name="raison" id="achats" value="achats" />
             <label for="achats">
               Déplacements pour effectuer des achats de fournitures nécessaires
               à l’activité professionnelle et des achats de première
@@ -474,7 +474,7 @@
             </label>
           </div>
           <div>
-            <input type="checkbox" name="sante" id="sante" />
+            <input type="radio" name="raison" id="sante" value="sante" />
             <label for="sante"
               >Consultations et soins ne pouvant être assurés à distance et ne
               pouvant être différés ; soin des patients atteints d'une affection
@@ -482,14 +482,14 @@
             >
           </div>
           <div>
-            <input type="checkbox" name="famille" id="famille" />
+            <input type="radio" name="raison" id="famille" value="famille" />
             <label for="famille"
               >Déplacements pour motif familial impérieux, pour l’assistance aux
               personnes vulnérables ou la garde d’enfants.</label
             >
           </div>
           <div>
-            <input type="checkbox" name="sport" id="sport" />
+            <input type="radio" name="raison" id="sport" value="sport" />
             <label for="sport"
               >Déplacements brefs, dans la limite d'une heure quotidienne et
               dans un rayon maximal d'un kilomètre autour du domicile, liés soit
@@ -501,16 +501,22 @@
             >
           </div>
           <div>
-            <input type="checkbox" name="judiciaire" id="judiciaire" />
+            <input
+              type="radio"
+              name="raison"
+              id="judiciaire"
+              value="judiciaire"
+            />
             <label for="judiciaire"
               >Convocation judiciaire ou administrative.</label
             >
           </div>
           <div>
             <input
-              type="checkbox"
-              name="interet-general"
+              type="radio"
+              name="raison"
               id="interet-general"
+              value="interet-general"
             />
             <label for="interet-general"
               >Participation à des missions d’intérêt général sur demande de
@@ -712,8 +718,11 @@
             const elements = document.getElementsByName(formElementName);
             if (elements.length) {
               const element = elements[0];
-              if (element.type === "checkbox") {
-                element.checked = serializedForm[formElementName];
+              if (element.type === "radio") {
+                const selectedRadio = document.getElementById(
+                  serializedForm[formElementName]
+                );
+                selectedRadio.checked = true;
               } else {
                 element.value = serializedForm[formElementName];
               }
@@ -750,9 +759,9 @@
       // Keep compatibility with IE.
       const formElements = Array.prototype.slice.call(form.elements);
       formElements.map(function(element) {
-        if (element.type === "checkbox") {
+        if (element.type === "radio") {
           element.onchange = function(event) {
-            saveToLocalStorage(event.target.name, event.target.checked);
+            saveToLocalStorage(event.target.name, event.target.value);
           };
         } else {
           element.oninput = function(event) {
@@ -933,6 +942,7 @@
         signatureWrapper.className = "drawing";
       };
 
+      // SAVING AND RESTORING DECLARATIONS
       function dateToString(date) {
         return date.toLocaleString().slice(0, 21);
       }
@@ -943,7 +953,10 @@
 
       function parseDeclarations(str) {
         const declarations = JSON.parse(str);
-        return declarations.map(d => stringToDate(d));
+        return declarations.map(function(declaration) {
+          declaration["date"] = stringToDate(declaration["date"]);
+          return declaration;
+        });
       }
 
       function getDeclarations() {
@@ -952,7 +965,9 @@
       }
 
       function addDeclaration() {
-        const newDeclaration = [new Date()];
+        const newDeclaration = [
+          { date: new Date(), raison: getRaisonDeplacement() }
+        ];
         // Add a new declaration to the front of the array.
         const declarations = newDeclaration.concat(getDeclarations());
         localStorage.setItem(declarationsKey, JSON.stringify(declarations));
@@ -960,7 +975,7 @@
       }
 
       function getRaisonDeplacement() {
-        const raison = document.querySelector("input:checked");
+        const raison = document.querySelector("input[name=raison]:checked");
         return raison.nextElementSibling.textContent;
       }
 
@@ -973,7 +988,7 @@
         identityAddress.textContent = document.getElementById("adresse").value;
         raisonDeplacement.textContent = getRaisonDeplacement();
         const declarations = getDeclarations();
-        depuis.textContent = dateToString(declarations[0]);
+        depuis.textContent = dateToString(declarations[0]["date"]);
         updateListeSorties(declarations);
       }
 
@@ -992,7 +1007,11 @@
         sorties.textContent = ""; // Remove all the children.
         const list = declarations.map(function(declaration) {
           const li = document.createElement("li");
-          li.textContent = dateToString(declaration);
+          li.textContent =
+            "Sortie le " +
+            dateToString(declaration["date"]) +
+            " : " +
+            declaration["raison"];
           sorties.append(li);
         });
       }
