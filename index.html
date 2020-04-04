@@ -204,6 +204,7 @@
         -webkit-transition: all 0.3s;
         -moz-transition: all 0.3s;
         transition: all 0.3s;
+        z-index: 100;
       }
 
       #qrcode-wrapper {
@@ -320,6 +321,7 @@
         line-height: 63px;
         text-align: center;
         padding-top: 8px;
+        z-index: 10;
       }
 
       @media print {
@@ -1000,7 +1002,7 @@
 
       function getRaisonDeplacement() {
         const raison = document.querySelector("input[name=raison]:checked");
-        return raison.nextElementSibling.textContent;
+        return raison.id;
       }
 
       function displaySortieEnCoursModal() {
