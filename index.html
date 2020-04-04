@@ -74,6 +74,24 @@
         padding: 8mm 15mm;
       }
 
+      #container #declaration-wrapper {
+        display: none;
+      }
+
+      #container.sortie-en-cours #saisie-infos {
+        display: none;
+      }
+
+      #container.sortie-en-cours #declaration-wrapper {
+        display: block;
+        display: flex;
+        flex-direction: column;
+      }
+
+      #declaration-wrapper span {
+        font-weight: bold;
+      }
+
       label {
         min-width: 100px;
         display: inline-block;
@@ -141,18 +159,9 @@
         display: none;
       }
 
-      #declaration-modal {
-        opacity: 0;
-        visibility: hidden;
-      }
-
-      #declaration-modal span {
-        font-weight: bold;
-      }
-
-      #container.sortie-en-cours #declaration-modal {
-        opacity: 1;
-        visibility: visible;
+      #qrcode-wrapper {
+        flex: 1;
+        margin: 0;
       }
 
       footer {
@@ -207,10 +216,6 @@
         z-index: 100;
       }
 
-      #qrcode-wrapper {
-        flex: 1;
-      }
-
       .infobulle p {
         line-height: 24px;
       }
@@ -226,14 +231,6 @@
         color: #444;
         border-radius: 4px;
         border: 1px solid #686868;
-      }
-
-      #declaration-modal .infobulle {
-        margin: 1% auto;
-        padding: 14px;
-        height: 94%;
-        display: flex;
-        flex-direction: column;
       }
 
       .modal-close span {
@@ -440,172 +437,177 @@
     </header>
     <div id="container">
       <h1>ATTESTATION DE DÉPLACEMENT DÉROGATOIRE (V2)</h1>
-      <h2>
-        En application de l’article 1er du décret du 16 mars 2020 portant
-        réglementation des déplacements dans le cadre de la lutte contre la
-        propagation du virus Covid-19 :
-      </h2>
-
-      <form id="declaration-form">
-        <p>Je soussigné(e)</p>
-        <div>
-          <label for="nom">Mme / M.</label>
-          <input type="text" id="nom" name="nom" />
-        </div>
-        <div>
-          <label for="date-naissance">Né(e) le (au format jj/mm/aaaa) :</label>
-          <input type="text" id="date-naissance" name="date-naissance" />
-        </div>
-        <div>
-          <label for="date-naissance">Lieu de naissance</label>
-          <input type="text" id="lieu-naissance" name="lieu-naissance" />
-        </div>
-        <div>
-          <label for="adresse">Demeurant :</label>
-          <textarea
-            type="text"
-            name="adresse"
-            id="adresse"
-            rows="3"
-            cols="40"
-          ></textarea>
-        </div>
-        <br />
-        <p>
-          certifie que mon déplacement est lié au motif suivant (cocher la case)
-          autorisé par l’article 1er du décret du 16 mars 2020 portant
+      <div id="saisie-infos">
+        <h2>
+          En application de l’article 1er du décret du 16 mars 2020 portant
           réglementation des déplacements dans le cadre de la lutte contre la
           propagation du virus Covid-19 :
-        </p>
+        </h2>
 
-        <div id="raisons">
+        <form id="declaration-form">
+          <p>Je soussigné(e)</p>
           <div>
-            <input type="radio" name="raison" id="achats" value="achats" />
-            <label for="achats">
-              Déplacements pour effectuer des achats de fournitures nécessaires
-              à l’activité professionnelle et des achats de première
-              nécessité<abbr
-                title="Y compris les acquisitions à titre gratuit (distribution de denrées alimentaires…) et les déplacements liés à la perception de prestations sociales et au retrait d’espèce"
-                >[1]</abbr
-              >
-              dans des établissements dont les activités demeurent autorisées.
-            </label>
+            <label for="nom">Mme / M.</label>
+            <input type="text" id="nom" name="nom" />
           </div>
           <div>
-            <input type="radio" name="raison" id="sante" value="sante" />
-            <label for="sante"
-              >Consultations et soins ne pouvant être assurés à distance et ne
-              pouvant être différés ; soin des patients atteints d'une affection
-              de longue durée.</label
+            <label for="date-naissance"
+              >Né(e) le (au format jj/mm/aaaa) :</label
             >
+            <input type="text" id="date-naissance" name="date-naissance" />
           </div>
           <div>
-            <input type="radio" name="raison" id="famille" value="famille" />
-            <label for="famille"
-              >Déplacements pour motif familial impérieux, pour l’assistance aux
-              personnes vulnérables ou la garde d’enfants.</label
-            >
+            <label for="date-naissance">Lieu de naissance</label>
+            <input type="text" id="lieu-naissance" name="lieu-naissance" />
           </div>
           <div>
-            <input type="radio" name="raison" id="sport" value="sport" />
-            <label for="sport"
-              >Déplacements brefs, dans la limite d'une heure quotidienne et
-              dans un rayon maximal d'un kilomètre autour du domicile, liés soit
-              à l'activité physique individuelle des personnes, à l'exclusion de
-              toute pratique sportive collective et de toute proximité avec
-              d'autres personnes, soit à la promenade avec les seules personnes
-              regroupées dans un même domicile, soit aux besoins des animaux de
-              compagnie.</label
-            >
+            <label for="adresse">Demeurant :</label>
+            <textarea
+              type="text"
+              name="adresse"
+              id="adresse"
+              rows="3"
+              cols="40"
+            ></textarea>
           </div>
-          <div>
-            <input
-              type="radio"
-              name="raison"
-              id="judiciaire"
-              value="judiciaire"
-            />
-            <label for="judiciaire"
-              >Convocation judiciaire ou administrative.</label
-            >
-          </div>
-          <div>
-            <input
-              type="radio"
-              name="raison"
-              id="interet-general"
-              value="interet-general"
-            />
-            <label for="interet-general"
-              >Participation à des missions d’intérêt général sur demande de
-              l’autorité administrative</label
-            >
-          </div>
-        </div>
-
-        <div id="date-lieu">
-          <label for="faita">Fait à </label
-          ><input id="faita" type="text" name="fait-a" />
-          <label for="date">, le</label>
-          <input type="date" id="date" name="date" />
-        </div>
-      </form>
-
-      <div id="signature-wrapper">
-        Signature :
-        <div id="signature-container">
-          <div id="canvas-wrapper">
-            <canvas id="dessiner-signature"> </canvas>
-          </div>
-          <div class="btn-container">
-            <button id="sauvegarder">Sauvegarder</button>
-            <button id="reset">Recommencer</button>
-          </div>
-        </div>
-        <div id="signature-display-container">
-          <img src="" alt="Signature" id="signature" />
-          <div class="btn-container">
-            <button id="refaire-signature">
-              Refaire cette signature
-            </button>
-          </div>
-          <div class="btn-container">
-            <button id="valider">
-              Je sors de chez moi, générer une déclaration
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div id="declaration-modal" class="modal-window">
-        <div class="infobulle">
-          <h1 id="identity-name"></h1>
+          <br />
           <p>
-            Né le <span id="identity-dob"></span> à
-            <span id="identity-pob"></span><br />
-            Demeurant au <span id="identity-address"></span><br />
-            Certifie que mon déplacement est lié au motif suivant :<br />
-            <span id="raison-deplacement"></span>
+            certifie que mon déplacement est lié au motif suivant (cocher la
+            case) autorisé par l’article 1er du décret du 16 mars 2020 portant
+            réglementation des déplacements dans le cadre de la lutte contre la
+            propagation du virus Covid-19 :
           </p>
 
-          <div id="sortie">
-            Je suis sorti depuis le
-            <span id="depuis"></span>
-            <div class="btn-container">
-              <button id="retour">
-                Je suis de retour chez moi
-              </button>
+          <div id="raisons">
+            <div>
+              <input type="radio" name="raison" id="achats" value="achats" />
+              <label for="achats">
+                Déplacements pour effectuer des achats de fournitures
+                nécessaires à l’activité professionnelle et des achats de
+                première nécessité<abbr
+                  title="Y compris les acquisitions à titre gratuit (distribution de denrées alimentaires…) et les déplacements liés à la perception de prestations sociales et au retrait d’espèce"
+                  >[1]</abbr
+                >
+                dans des établissements dont les activités demeurent autorisées.
+              </label>
+            </div>
+            <div>
+              <input type="radio" name="raison" id="sante" value="sante" />
+              <label for="sante"
+                >Consultations et soins ne pouvant être assurés à distance et ne
+                pouvant être différés ; soin des patients atteints d'une
+                affection de longue durée.</label
+              >
+            </div>
+            <div>
+              <input type="radio" name="raison" id="famille" value="famille" />
+              <label for="famille"
+                >Déplacements pour motif familial impérieux, pour l’assistance
+                aux personnes vulnérables ou la garde d’enfants.</label
+              >
+            </div>
+            <div>
+              <input type="radio" name="raison" id="sport" value="sport" />
+              <label for="sport"
+                >Déplacements brefs, dans la limite d'une heure quotidienne et
+                dans un rayon maximal d'un kilomètre autour du domicile, liés
+                soit à l'activité physique individuelle des personnes, à
+                l'exclusion de toute pratique sportive collective et de toute
+                proximité avec d'autres personnes, soit à la promenade avec les
+                seules personnes regroupées dans un même domicile, soit aux
+                besoins des animaux de compagnie.</label
+              >
+            </div>
+            <div>
+              <input
+                type="radio"
+                name="raison"
+                id="judiciaire"
+                value="judiciaire"
+              />
+              <label for="judiciaire"
+                >Convocation judiciaire ou administrative.</label
+              >
+            </div>
+            <div>
+              <input
+                type="radio"
+                name="raison"
+                id="interet-general"
+                value="interet-general"
+              />
+              <label for="interet-general"
+                >Participation à des missions d’intérêt général sur demande de
+                l’autorité administrative</label
+              >
             </div>
           </div>
 
-          <details>
-            <summary>Liste des sorties</summary>
-            <ul id="liste-sorties"></ul>
-          </details>
-
-          <div id="qrcode-wrapper">
-            <canvas id="qrcode"></canvas>
+          <div id="date-lieu">
+            <label for="faita">Fait à </label
+            ><input id="faita" type="text" name="fait-a" />
+            <label for="date">, le</label>
+            <input type="date" id="date" name="date" />
           </div>
+        </form>
+
+        <div id="signature-wrapper">
+          Signature :
+          <div id="signature-container">
+            <div id="canvas-wrapper">
+              <canvas id="dessiner-signature"> </canvas>
+            </div>
+            <div class="btn-container">
+              <button id="sauvegarder">Sauvegarder</button>
+              <button id="reset">Recommencer</button>
+            </div>
+          </div>
+          <div id="signature-display-container">
+            <img src="" alt="Signature" id="signature" />
+            <div class="btn-container">
+              <button id="refaire-signature">
+                Refaire cette signature
+              </button>
+            </div>
+            <div class="btn-container">
+              <button id="valider">
+                Je sors de chez moi, générer une déclaration
+              </button>
+            </div>
+          </div>
+        </div>
+        <div id="help-button" onclick="openModal()">
+          ?
+        </div>
+      </div>
+
+      <div id="declaration-wrapper">
+        <h1 id="identity-name"></h1>
+        <p>
+          Né le <span id="identity-dob"></span> à <span id="identity-pob"></span
+          ><br />
+          Demeurant au <span id="identity-address"></span><br />
+          Certifie que mon déplacement est lié au motif suivant :<br />
+          <span id="raison-deplacement"></span>
+        </p>
+
+        <div id="sortie">
+          Je suis sorti depuis le
+          <span id="depuis"></span>
+          <div class="btn-container">
+            <button id="retour">
+              Je suis de retour chez moi
+            </button>
+          </div>
+        </div>
+
+        <details>
+          <summary>Liste des sorties</summary>
+          <ul id="liste-sorties"></ul>
+        </details>
+
+        <div id="qrcode-wrapper">
+          <canvas id="qrcode"></canvas>
         </div>
       </div>
     </div>
@@ -630,9 +632,6 @@
         >.
       </p>
     </footer>
-    <div id="help-button" onclick="openModal()">
-      ?
-    </div>
     <div id="open-modal" class="modal-window">
       <div class="infobulle">
         <div class="modal-close">
@@ -1022,7 +1021,7 @@
         depuis.textContent = depuisDate;
         qrcode = new QRious({
           element: document.getElementById("qrcode"),
-          size: document.getElementById("qrcode-wrapper").clientHeight,
+          size: document.getElementById("qrcode-wrapper").clientWidth,
           value:
             "Cree le: " +
             depuisDate +
