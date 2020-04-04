@@ -204,13 +204,18 @@
         -webkit-transition: all 0.3s;
         -moz-transition: all 0.3s;
         transition: all 0.3s;
+        z-index: 100;
       }
 
-      #infobulle p {
+      #qrcode-wrapper {
+        flex: 1;
+      }
+
+      .infobulle p {
         line-height: 24px;
       }
 
-      #infobulle {
+      .infobulle {
         position: relative;
         text-align: left;
         width: 640px;
@@ -221,6 +226,14 @@
         color: #444;
         border-radius: 4px;
         border: 1px solid #686868;
+      }
+
+      #declaration-modal .infobulle {
+        margin: 1% auto;
+        padding: 14px;
+        height: 94%;
+        display: flex;
+        flex-direction: column;
       }
 
       .modal-close span {
@@ -308,6 +321,7 @@
         line-height: 63px;
         text-align: center;
         padding-top: 8px;
+        z-index: 10;
       }
 
       @media print {
@@ -439,8 +453,12 @@
           <input type="text" id="nom" name="nom" />
         </div>
         <div>
-          <label for="date-naissance">Né(e) le :</label>
+          <label for="date-naissance">Né(e) le (au format jj/mm/aaaa) :</label>
           <input type="text" id="date-naissance" name="date-naissance" />
+        </div>
+        <div>
+          <label for="date-naissance">Lieu de naissance</label>
+          <input type="text" id="lieu-naissance" name="lieu-naissance" />
         </div>
         <div>
           <label for="adresse">Demeurant :</label>
@@ -560,10 +578,11 @@
       </div>
 
       <div id="declaration-modal" class="modal-window">
-        <div id="infobulle">
+        <div class="infobulle">
           <h1 id="identity-name"></h1>
           <p>
-            Né le <span id="identity-dob"></span><br />
+            Né le <span id="identity-dob"></span> à
+            <span id="identity-pob"></span><br />
             Demeurant au <span id="identity-address"></span><br />
             Certifie que mon déplacement est lié au motif suivant :<br />
             <span id="raison-deplacement"></span>
@@ -583,6 +602,10 @@
             <summary>Liste des sorties</summary>
             <ul id="liste-sorties"></ul>
           </details>
+
+          <div id="qrcode-wrapper">
+            <canvas id="qrcode"></canvas>
+          </div>
         </div>
       </div>
     </div>
@@ -611,7 +634,7 @@
       ?
     </div>
     <div id="open-modal" class="modal-window">
-      <div id="infobulle">
+      <div class="infobulle">
         <div class="modal-close">
           <span onclick="closeModal()" title="Fermer la fenêtre">
             &times;
@@ -674,6 +697,8 @@
       </div>
     </div>
 
+    <script src="./qrious.min.js"></script>
+
     <script>
       // Various html nodes
       const container = document.getElementById("container");
@@ -697,6 +722,7 @@
       const sorties = document.getElementById("liste-sorties");
       const identityName = document.getElementById("identity-name");
       const identityDoB = document.getElementById("identity-dob");
+      const identityPoB = document.getElementById("identity-pob");
       const identityAddress = document.getElementById("identity-address");
       const raisonDeplacement = document.getElementById("raison-deplacement");
 
@@ -709,7 +735,7 @@
       const fromStorage = localStorage.getItem(window.location.pathname);
       if (fromStorage) {
         serializedForm = JSON.parse(fromStorage);
-        Object.keys(serializedForm).map(function(formElementName) {
+        Object.keys(serializedForm).map(function (formElementName) {
           if (formElementName === "signature") {
             // Special casing the signature which isn't a form element.
             signature.src = serializedForm["signature"];
@@ -758,13 +784,13 @@
 
       // Keep compatibility with IE.
       const formElements = Array.prototype.slice.call(form.elements);
-      formElements.map(function(element) {
+      formElements.map(function (element) {
         if (element.type === "radio") {
-          element.onchange = function(event) {
+          element.onchange = function (event) {
             saveToLocalStorage(event.target.name, event.target.value);
           };
         } else {
-          element.oninput = function(event) {
+          element.oninput = function (event) {
             saveToLocalStorage(event.target.name, event.target.value);
           };
         }
@@ -902,7 +928,7 @@
           canvas.addEventListener("touchstart", touchstartEventHandler);
           canvas.addEventListener("touchmove", touchMoveEventHandler);
           canvas.addEventListener("touchend", mouseUpEventHandler);
-          canvas.addEventListener("touchcancel", function(event) {
+          canvas.addEventListener("touchcancel", function (event) {
             event.preventDefault();
           });
           touchstartEventHandler(detectEvent);
@@ -926,18 +952,18 @@
       canvas.addEventListener("touchstart", touchWins);
 
       // Save the signature or reset it.
-      saveSignature.onclick = function() {
+      saveSignature.onclick = function () {
         const dataURL = canvas.toDataURL("image/png");
         signature.src = dataURL;
         saveToLocalStorage("signature", dataURL);
         signatureWrapper.className = "displaying";
       };
 
-      resetSignature.onclick = function() {
+      resetSignature.onclick = function () {
         context.clearRect(0, 0, context.canvas.width, context.canvas.height);
       };
 
-      restartSignature.onclick = function() {
+      restartSignature.onclick = function () {
         context.clearRect(0, 0, context.canvas.width, context.canvas.height);
         signatureWrapper.className = "drawing";
       };
@@ -953,7 +979,7 @@
 
       function parseDeclarations(str) {
         const declarations = JSON.parse(str);
-        return declarations.map(function(declaration) {
+        return declarations.map(function (declaration) {
           declaration["date"] = stringToDate(declaration["date"]);
           return declaration;
         });
@@ -966,7 +992,7 @@
 
       function addDeclaration() {
         const newDeclaration = [
-          { date: new Date(), raison: getRaisonDeplacement() }
+          { date: new Date(), raison: getRaisonDeplacement() },
         ];
         // Add a new declaration to the front of the array.
         const declarations = newDeclaration.concat(getDeclarations());
@@ -976,36 +1002,62 @@
 
       function getRaisonDeplacement() {
         const raison = document.querySelector("input[name=raison]:checked");
-        return raison.nextElementSibling.textContent;
+        return raison.id;
       }
 
       function displaySortieEnCoursModal() {
         container.className = "sortie-en-cours";
-        identityName.textContent = document.getElementById("nom").value;
-        identityDoB.textContent = document.getElementById(
-          "date-naissance"
-        ).value;
-        identityAddress.textContent = document.getElementById("adresse").value;
-        raisonDeplacement.textContent = getRaisonDeplacement();
+        const nom = document.getElementById("nom").value;
+        const dob = document.getElementById("date-naissance").value;
+        const pob = document.getElementById("lieu-naissance").value;
+        const adresse = document.getElementById("adresse").value;
+        const raison = getRaisonDeplacement();
         const declarations = getDeclarations();
-        depuis.textContent = dateToString(declarations[0]["date"]);
+        const depuis = dateToString(declarations[0]["date"]);
+        identityName.textContent = nom;
+        identityDoB.textContent = dob;
+        identityPoB.textContent = pob;
+        identityAddress.textContent = adresse;
+        raisonDeplacement.textContent = raison;
+        depuis.textContent = depuis;
+        qrcode = new QRious({
+          element: document.getElementById("qrcode"),
+          size: document.getElementById("qrcode-wrapper").clientHeight,
+          value:
+            "Cree le: " +
+            depuis +
+            "; Nom: " +
+            nom +
+            // TODO: split first and last name?
+            // + "; Prenom: " + prenom
+            "; Naissance: " +
+            dob +
+            " a " +
+            pob +
+            "; Adresse: " +
+            adresse +
+            "; Sortie: " +
+            depuis +
+            "; Motifs: " +
+            raison,
+        });
         updateListeSorties(declarations);
       }
 
-      valider.onclick = function() {
+      valider.onclick = function () {
         const declarations = addDeclaration();
         localStorage.setItem(sortieEnCoursKey, true);
         displaySortieEnCoursModal();
       };
 
-      retour.onclick = function() {
+      retour.onclick = function () {
         container.className = "";
         localStorage.setItem(sortieEnCoursKey, false);
       };
 
       function updateListeSorties(declarations) {
         sorties.textContent = ""; // Remove all the children.
-        const list = declarations.map(function(declaration) {
+        const list = declarations.map(function (declaration) {
           const li = document.createElement("li");
           li.textContent =
             "Sortie le " +
