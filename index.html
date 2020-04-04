@@ -1013,19 +1013,19 @@
         const adresse = document.getElementById("adresse").value;
         const raison = getRaisonDeplacement();
         const declarations = getDeclarations();
-        const depuis = dateToString(declarations[0]["date"]);
+        const depuisDate = dateToString(declarations[0]["date"]);
         identityName.textContent = nom;
         identityDoB.textContent = dob;
         identityPoB.textContent = pob;
         identityAddress.textContent = adresse;
         raisonDeplacement.textContent = raison;
-        depuis.textContent = depuis;
+        depuis.textContent = depuisDate;
         qrcode = new QRious({
           element: document.getElementById("qrcode"),
           size: document.getElementById("qrcode-wrapper").clientHeight,
           value:
             "Cree le: " +
-            depuis +
+            depuisDate +
             "; Nom: " +
             nom +
             // TODO: split first and last name?
@@ -1037,7 +1037,7 @@
             "; Adresse: " +
             adresse +
             "; Sortie: " +
-            depuis +
+            depuisDate +
             "; Motifs: " +
             raison,
         });
