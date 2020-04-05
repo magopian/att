@@ -1097,5 +1097,18 @@
         displaySortieEnCoursModal();
       }
     </script>
+
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("./sw.js", { scope: "./" })
+          .then((reg) => {
+            console.log("Enregistrement du service worker pour le offline");
+          })
+          .catch((error) => {
+            console.log("Enregistrement du service worker échoué :", error);
+          });
+      }
+    </script>
   </body>
 </html>
